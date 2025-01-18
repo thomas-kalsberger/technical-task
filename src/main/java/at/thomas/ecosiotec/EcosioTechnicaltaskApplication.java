@@ -1,6 +1,7 @@
 package at.thomas.ecosiotec;
 
 import at.thomas.ecosiotec.crawler.LinkCrawler;
+import org.apache.commons.validator.UrlValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -12,7 +13,7 @@ import java.util.List;
 public class EcosioTechnicaltaskApplication implements CommandLineRunner {
 
 	// holds Ecosio url
-	private static final String ECOSIO_SITE_URL = "https://www.ecosio.com";
+	private static final String DEMO_URL = "https://www.ecosio.com";
 
 	// injected link crawler implementation
 	private final LinkCrawler linkCrawler;
@@ -39,7 +40,11 @@ public class EcosioTechnicaltaskApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		// run crawler on ecosio site and print result
-		List<String> links = this.linkCrawler.crawl(ECOSIO_SITE_URL);
-		links.stream().sorted().forEach(System.out::println);
+		UrlValidator urlValidator = new UrlValidator();
+		if (urlValidator.isValid(DEMO_URL)) {
+			List<String> links = this.linkCrawler.crawl(DEMO_URL);
+			links.stream().sorted().forEach(System.out::println);
+		}
+		else System.out.println("invalid url: " + DEMO_URL);
 	}
 }

@@ -1,5 +1,6 @@
 package at.thomas.ecosiotec.crawler;
 
+import org.apache.commons.validator.UrlValidator;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -55,6 +56,12 @@ public class SearchLinksTask implements Callable<List<String>> {
 
     @Override
     public List<String> call()  {
+        if(this.url == null) {
+            // log invalid url and return emty list
+            System.out.println("SearchLinksTask: url can not be null, returning empty list.");
+            UrlValidator v;
+            return Collections.emptyList();
+        }
         return this.collectWithParser();
     }
 
